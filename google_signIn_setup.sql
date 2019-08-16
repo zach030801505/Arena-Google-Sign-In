@@ -1,16 +1,19 @@
 /** This Script makes all tables and stored procedures for the google sign in module **/
 /** Developed by Zachary Justus **/
 
-/**
-CREATE TABLE dbo.cust_luminate_google_id (
+
+IF NOT EXISTS(SELECT * FROM INFORMATION_SCHEMA.TABLES where TABLE_NAME = 'cust_luminate_google_id')
+BEGIN
+	CREATE TABLE dbo.cust_luminate_google_id (
 	person_id int,
 	google_id varchar(50) primary key
-)
+	)
+END
 GO
-**/
+
 
 /** this addes a google id user pair to the database **/
-CREATE PROCEDURE dbo.cust_luminate_googleLogin_sp_add_googleID(
+CREATE or ALTER PROCEDURE dbo.cust_luminate_googleLogin_sp_add_googleID(
 @google_id varchar(50),
 @person_id int)
 as
@@ -25,7 +28,7 @@ END
 GO
 
 /** this alters the google id table to update person id's **/
-CREATE PROCEDURE dbo.cust_luminate_googleLogin_sp_save_userID(
+CREATE or ALTER PROCEDURE dbo.cust_luminate_googleLogin_sp_save_userID(
 @google_id varchar(50),
 @person_id int
 ) as 
@@ -36,7 +39,7 @@ END
 GO
 
 /** this checks if a google ID user Pair exists in the database **/
-CREATE PROCEDURE dbo.cust_luminate_googleLogIn_sp_get_userID(
+CREATE or ALTER PROCEDURE dbo.cust_luminate_googleLogIn_sp_get_userID(
 @google_id varchar(50),
 @person int OUTPUT)
 as
@@ -86,7 +89,7 @@ END
 GO
 
 --select login_id from dbo.secu_login where person_id = 24211
-CREATE PROCEDURE dbo.cust_luminate_googleLogIn_sp_get_userLogin(
+CREATE or ALTER PROCEDURE dbo.cust_luminate_googleLogIn_sp_get_userLogin(
 @person_id int,
 @person_login varchar(50) OUTPUT
 ) as
@@ -106,7 +109,7 @@ END
 GO
 
 --creates a new user and returns userID
-CREATE PROCEDURE dbo.cust_luminate_googleLogIn_sp_save_person(
+CREATE or ALTER PROCEDURE dbo.cust_luminate_googleLogIn_sp_save_person(
 @fname varchar(50),
 @lname varchar(50),
 @email varchar(100),
