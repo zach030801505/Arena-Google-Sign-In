@@ -1,12 +1,13 @@
 /** This Script makes all tables and stored procedures for the google sign in module **/
 /** Developed by Zachary Justus **/
 
+/**
 CREATE TABLE dbo.cust_luminate_google_id (
 	person_id int,
 	google_id varchar(50) primary key
 )
 GO
-
+**/
 
 /** this addes a google id user pair to the database **/
 CREATE PROCEDURE dbo.cust_luminate_googleLogin_sp_add_googleID(
@@ -27,7 +28,7 @@ GO
 CREATE PROCEDURE dbo.cust_luminate_googleLogin_sp_save_userID(
 @google_id varchar(50),
 @person_id int
-) as
+) as 
 BEGIN
 	UPDATE dbo.cust_luminate_google_id
 	set person_id = @person_id where google_id = @google_id;
@@ -40,20 +41,20 @@ CREATE PROCEDURE dbo.cust_luminate_googleLogIn_sp_get_userID(
 @person int OUTPUT)
 as
 BEGIN
-
+	
 	DECLARE @person_id int = (SELECT top(1) person_id from dbo.cust_luminate_google_id where google_id = @google_id)
-
+	
 	if @person_id is not null
 	BEGIN --if person is in google table
 		DECLARE @valid int =(select top(1) person_id from dbo.core_person where person_id = @person_id)
-
+		
 		if @valid is not null --if person id is in person table
 		BEGIN
-			SET @person = @valid
+			SET @person = @valid 
 			return
 		END
 		ELSE --if person was not in person table
-		BEGIN
+		BEGIN 
 			DECLARE @merged int = (SELECT top 1 old_person_id from dbo.core_person_merged where old_person_id = @person_id)
 			IF(@merged is not null) --this checks if the person was merged
 			BEGIN
@@ -80,7 +81,7 @@ BEGIN
 		SET @person = -1
 		Return
 	END
-
+	
 END
 GO
 
@@ -110,11 +111,10 @@ CREATE PROCEDURE dbo.cust_luminate_googleLogIn_sp_save_person(
 @lname varchar(50),
 @email varchar(100),
 @defaultMemberStatus int,
-@title_luid int,
 @orgID int,
 @defaultCampusID int,
 @newID int OUTPUT
-) as
+) as 
 BEGIN
 	DECLARE
 	-- new person variables
@@ -122,7 +122,7 @@ BEGIN
 	@UserId varchar(50) = 'GoogleSignIn',
 	@OrganizationId int = @orgID,
 	@CampusId int = @defaultCampusID,
-	@Title int = @title_luid,
+	@Title int = null,
 	@NickName nvarchar(50) = @fname,
 	@FirstName nvarchar(50) = @fname,
 	@MiddleName nvarchar(50) = '',
@@ -160,16 +160,16 @@ BEGIN
 	@emailID int = -1
 
 	--make a person
-	exec dbo.core_sp_save_person
+	exec dbo.core_sp_save_person 
 		@PersonID, @UserId, @OrganizationId, @CampusId, @Title, @NickName, @FirstName, @MiddleName, @LastName, @Suffix,
 		@BirthDate, @Gender, @Notes, @MedicalInformation, @Ssn, @Pin, @MaritalStatus, @AnniversaryDate, @MemberStatus,
 		@RecordStatus, @BlobID,	@InactiveReason, @ActiveMeter, @ContributeIndividually,	@PrintStatement, @EmailStatement,
 		@IncludeOnEnvelope,	@StaffMember, @LastAttended, @GraduationDate, @Business, @Restricted, @ContributionNote, @SubDonorId,
 		@Sync, @GenerateEnvelopeNumber,	@EnvelopeNumberPersonId, @ID OUTPUT
-
+	
 	--set there email
 	exec dbo.core_sp_save_personEmail @emailID, @ID, 1, 1, @email, 'added by google', 'GoogleSignIn', 1, @orgID, @EmailID OUTPUT
-
+	
 	--add them to a family
 	DECLARE @famID int,
 		@famName varchar(100) = 'The '+@lname+' Family'

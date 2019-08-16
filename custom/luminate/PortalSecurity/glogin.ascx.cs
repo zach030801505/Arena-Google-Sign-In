@@ -35,10 +35,6 @@ namespace ArenaWeb.WebControls.Custom.Luminate.Security{
         public string MemberStatusSetting { get { return Setting("MemberStatus", "", false); } }
 
         [Category("New Member")]
-        [NumericSetting("Title", "this is the default title ID of new people added by this module", true)]
-        public string TitleSetting {get {return Setting("Title", "", true);}}
-
-        [Category("New Member")]
         [NumericSetting("DefaultCampus", "The campus to assign a user.", true)]
         public string DefaultCampusSetting { get { return Setting("DefaultCampus", "", false); } }
 
@@ -125,14 +121,11 @@ namespace ArenaWeb.WebControls.Custom.Luminate.Security{
                                     String email = (String)Request.Form["email"];
 
                                     int memberStatus;
-                                    int title;
                                     int orgID = CurrentOrganization.OrganizationID;
                                     int campusID;
 
                                     try { memberStatus = Int32.Parse(MemberStatusSetting); }
                                     catch { throw new ModuleException(CurrentPortalPage, CurrentModule, "Default Member Status ID must be numeric.: "); }
-                                    try { title = Int32.Parse(TitleSetting); }
-                                    catch { throw new ModuleException(CurrentPortalPage, CurrentModule, "Default TitleSetting ID must be numeric.: "); }
                                     try { campusID = Int32.Parse(DefaultCampusSetting); }
                                     catch { throw new ModuleException(CurrentPortalPage, CurrentModule, "Default Campus ID must be numeric.: "); }
 
@@ -145,7 +138,7 @@ namespace ArenaWeb.WebControls.Custom.Luminate.Security{
                                     }
 
                                     //make a new person
-                                    personID = arenaData.newUser(splitName[0], splitName[1], email, memberStatus, title, orgID, campusID);
+                                    personID = arenaData.newUser(splitName[0], splitName[1], email, memberStatus, orgID, campusID);
                                     //add personID to google list
                                     if(personID > 0){
                                         int asscociateGid = arenaData.SaveGoogleID(personID, (String)Session["googleID"]);
@@ -322,14 +315,13 @@ namespace ArenaWeb.WebControls.Custom.Luminate.Security{
         }
 
         //adeds a new person and email
-        public int newUser(String fName, String lName, String email, int memberStatus, int title, int orgID, int campus){
+        public int newUser(String fName, String lName, String email, int memberStatus, int orgID, int campus){
 
             ArrayList paramList = new ArrayList();
             paramList.Add(new SqlParameter("@fname", fName));
             paramList.Add(new SqlParameter("@lname", lName));
             paramList.Add(new SqlParameter("@email", email));
             paramList.Add(new SqlParameter("@defaultMemberStatus", memberStatus));
-            paramList.Add(new SqlParameter("@title_luid", title));
             paramList.Add(new SqlParameter("@orgID", orgID));
             paramList.Add(new SqlParameter("@defaultCampusID", campus));
 
