@@ -113,7 +113,7 @@ namespace ArenaWeb.WebControls.Custom.Luminate.Security{
                             personID = arenaData.getUserID((String)Session["googleID"]); //lookes up userID from googleID
                             if(personID < 0){
                                 if (personID == -2){ //sql error
-                                    Response.Write("something went wrong");
+                                    Response.Write("1"); //returning 1 prevents loop
                                     Response.End();
                                 }
                                 else{ //no user found
@@ -168,7 +168,7 @@ namespace ArenaWeb.WebControls.Custom.Luminate.Security{
                                 }
 
                                 if(username == "-2"){
-                                    Response.Write("error something went wrong");
+                                    Response.Write("1");
                                     Response.End();
 
                                 }
@@ -197,7 +197,7 @@ namespace ArenaWeb.WebControls.Custom.Luminate.Security{
 
                         }
                         else{
-                            Response.Write("error something went wrong");
+                            Response.Write("1");
                             Response.End();
                         }
                     }
