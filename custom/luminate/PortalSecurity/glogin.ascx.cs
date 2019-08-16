@@ -147,7 +147,9 @@ namespace ArenaWeb.WebControls.Custom.Luminate.Security{
                                     //make a new person
                                     personID = arenaData.newUser(splitName[0], splitName[1], email, memberStatus, title, orgID, campusID);
                                     //add personID to google list
-                                    int asscociateGid = arenaData.SaveGoogleID(personID, (String)Session["googleID"]);
+                                    if(personID > 0){
+                                        int asscociateGid = arenaData.SaveGoogleID(personID, (String)Session["googleID"]);
+                                    }
 
                                 }
                             }
