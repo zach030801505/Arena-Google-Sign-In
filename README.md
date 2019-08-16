@@ -3,6 +3,7 @@
 
 <h2>How It Works</h2>
 <p>When a user clickes the sign in with google button this module checks if a that googleID is valid and exists in the database, if it exists it lookes up the ascociated personID and then the persons username, if the person does not have a username it creates one for that user then signes in with the new Credentials. If that googleID is not in the database it then creates a new person including firts name last name email and googleID provided by the googleAPI gives the user a login username then signes the person in, onced signed in the module telles the webpage to either refresh or redirect based on the current context.</p>
+<p>A new person created by this module can be merged with an existing person to link the existing person to the googleID</p>
 
 <h2>Installation</h2>
 <ol>
