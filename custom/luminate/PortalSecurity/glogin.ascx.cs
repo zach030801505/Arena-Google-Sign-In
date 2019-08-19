@@ -43,7 +43,7 @@ namespace ArenaWeb.WebControls.Custom.Luminate.Security{
         public string LogInTextSetting { get { return Setting("LogInText", "", false); } }
 
         [Category("User Propmpts")]
-        [TextSetting("Welcome Text", "welcomes the user when logged in. ##firstname##, ##nickname##, ##lastname## are available", false)]
+        [TextSetting("Welcome Text", "welcomes the user when logged in. ##nickname## and ##lastname## are available", false)]
         public string WelcomeTextSetting { get { return Setting("WelcomeText", "", false); } }
 
         #endregion
@@ -67,10 +67,10 @@ namespace ArenaWeb.WebControls.Custom.Luminate.Security{
 
                 String WelcomeText;
                 if((String)WelcomeTextSetting != String.Empty) WelcomeText = (String)WelcomeTextSetting;
-                else WelcomeText = "Welcome ##nickname## ##lastname##!";
+                else WelcomeText = "Welcome ##nickname## ##lastname##";
 
                 LogInPageBtn.Visible = false;
-                lcName.Text = WelcomeTextSetting
+                lcName.Text = WelcomeText
                                 .Replace("##nickname##", (string.IsNullOrEmpty(CurrentPerson.NickName) ? CurrentPerson.FirstName : CurrentPerson.NickName))
                                 .Replace("##lastname##", CurrentPerson.LastName);
                 lcName.Visible = true;
