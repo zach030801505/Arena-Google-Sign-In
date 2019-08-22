@@ -19,7 +19,7 @@
 
             //sends the id_token for validation
             var xhr = new XMLHttpRequest();
-            xhr.open('POST', 'default.aspx?page=<%= Request["page"] %>&requestUrl=<%= Request["requestUrl"]%>');
+            xhr.open('POST', 'default.aspx'+window.location.search);
             xhr.setRequestHeader('Content-Type', 'application/x-www-form-urlencoded');
             xhr.onload = function() {
                 if(xhr.responseText != "1"){
