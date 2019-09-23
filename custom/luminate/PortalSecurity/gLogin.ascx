@@ -39,25 +39,6 @@
             $("#gSignOut").show();
 
     }
-
-    function GsignOut() {
-        var auth2 = gapi.auth2.getAuthInstance();
-        auth2.signOut().then(function () {
-            console.log("user signed out");
-
-            $("#gSignIn").show();
-            $("#gSignOut").hide();
-
-            var xhr = new XMLHttpRequest();
-            xhr.open('POST', 'default.aspx?page=<%= Request["page"] %>');
-            xhr.setRequestHeader('Content-Type', 'application/x-www-form-urlencoded');
-            xhr.onload = function() {
-              location.reload();
-            };
-            xhr.send('sucessLogOut=true');
-
-        });
-    }
     function signOut() {
         try{
             var auth2 = gapi.auth2.getAuthInstance();
