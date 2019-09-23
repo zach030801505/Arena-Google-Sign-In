@@ -4,11 +4,15 @@
 
 <meta name="google-signin-client_id" content="<%= ClientIDSetting %>">
 
+<asp:Panel ID="signInPnl" Runat="server">
 <div id="gSignIn" class="col-4 g-signin2" align="center" data-onsuccess="GSignIn" visible="false"></div>
 <asp:Button id="LogInPageBtn" runat="server" class="btn btn-primary col-4"/>
+</asp:Panel>
 
 <asp:Literal ID="lcName" runat="server" /><br/>
-<a href="#" class="btn btn-primary col-4" id="gSignOut" onclick="GsignOut();" style="display:none;">Click here to log out</a>
+<asp:Panel ID="logOut" Runat="server" Visible="False">
+<a href="#" class="btn btn-primary col-4" id="SignOut" onclick="signOut();">Click here to log out</a>
+</asp:Panel>
 <script type="text/javascript">
 
     function GSignIn(googleUser) {
@@ -53,5 +57,22 @@
             xhr.send('sucessLogOut=true');
 
         });
+    }
+    function signOut() {
+        try{
+            var auth2 = gapi.auth2.getAuthInstance();
+            auth2.signOut().then(function () {});
+        }
+        catch(err){}
+        $("#gSignIn").show();
+        $("#gSignOut").hide();
+
+        var xhr = new XMLHttpRequest();
+        xhr.open('POST', 'default.aspx?page=<%= Request["page"] %>');
+        xhr.setRequestHeader('Content-Type', 'application/x-www-form-urlencoded');
+        xhr.onload = function() {
+          location.reload();
+        };
+        xhr.send('sucessLogOut=true');
     }
 </script>

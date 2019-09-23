@@ -53,7 +53,7 @@ namespace ArenaWeb.WebControls.Custom.Luminate.Security{
         protected void Page_Load(object sender, System.EventArgs e){
             if(!Request.IsAuthenticated){
                 if(Request["page"] != CurrentPortal.LoginPageID.ToString()){
-
+                    signInPnl.Visible = true;
                     if((String)LogInTextSetting != String.Empty) LogInPageBtn.Text = (String)LogInTextSetting;
                     else LogInPageBtn.Text = "Sign in with credentials";
                     LogInPageBtn.Visible = true;
@@ -69,7 +69,9 @@ namespace ArenaWeb.WebControls.Custom.Luminate.Security{
                 if((String)WelcomeTextSetting != String.Empty) WelcomeText = (String)WelcomeTextSetting;
                 else WelcomeText = "Welcome ##nickname## ##lastname##";
 
+                signInPnl.Visible = false;
                 LogInPageBtn.Visible = false;
+                logOut.Visible = true;
                 lcName.Text = WelcomeText
                                 .Replace("##nickname##", (string.IsNullOrEmpty(CurrentPerson.NickName) ? CurrentPerson.FirstName : CurrentPerson.NickName))
                                 .Replace("##lastname##", CurrentPerson.LastName);
@@ -221,6 +223,7 @@ namespace ArenaWeb.WebControls.Custom.Luminate.Security{
         public void gSignOut(){ //sign out method
             //signOut
             FormsAuthentication.SignOut();
+            logOut.Visible = false;
             // Invalidate roles token
             Response.Cookies["portalroles"].Value = null;
             Response.Cookies["portalroles"].Path = "/";
